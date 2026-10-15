@@ -1,0 +1,55 @@
+
+name: Build IPTV Mate Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'iptv-mate-android-tv-player-oct-15-2026-12-22-16-pm/android/**'
+      - '.github/workflows/build-android.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: iptv-mate-android-tv-player-oct-15-2026-12-22-16-pm/android
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: '8.7'
+
+      - name: Build debug APK
+        run: |
+          if [ -f gradlew ]; then
+            chmod +x gradlew
+            ./gradlew --no-daemon assembleDebug
+          else
+            gradle --no-daemon assembleDebug
+          fi
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: IPTV-Mate-debug-APK
+          path: iptv-mate-android-tv-player-oct-15-2026-12-22-16-pm/android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
