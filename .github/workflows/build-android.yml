@@ -29,11 +29,17 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Locate Android SDK
+        run: |
+          echo "ANDROID_HOME=${ANDROID_HOME}"
+          echo "ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT}"
+          if [ -z "$ANDROID_HOME" ] || [ ! -d "$ANDROID_HOME" ]; then
+            echo "Android SDK was not found on the runner."
+            exit 1
+          fi
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
 
@@ -53,3 +59,4 @@ jobs:
           path: iptv-mate-android-tv-player-oct-15-2026-12-22-16-pm/android/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 14
+
