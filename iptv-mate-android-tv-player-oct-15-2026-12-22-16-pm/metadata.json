@@ -1,0 +1,6 @@
+{
+  "name": "IPTV Mate — Android TV Player",
+  "description": "Production-grade Android TV IPTV player featuring M3U & JioTV Go API parsing, HLS/DASH/Widevine DRM playback, 10-foot D-pad navigation, and Kotlin architecture.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
